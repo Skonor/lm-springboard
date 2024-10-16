@@ -45,7 +45,7 @@ parser.add_argument('--keep-datamodule', action='store_true')
 
 
 MAIN_PROJ = "base"  # project name for wandb runs
-wandb_username = "gail_weiss"
+wandb_username = "skonor"
 
 
 class Namer:
