@@ -20,7 +20,7 @@ try:
                              l.startswith("#")]
 except Exception as e:
     print("couldnt find extra models paths")
-    models_paths = "../saved-models"
+    models_paths = ["../saved-models"]
 
 
 final_chkpt = "final"
