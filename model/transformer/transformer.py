@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from model.transformer.transformerencoderlayer import TransformerEncoderLayer
+from model.transformer.moe_transformer import MoeTransformerBlock
 from util import printer_print as print
 
 
@@ -23,6 +24,14 @@ class Transformer(nn.Module):
                             d_model=self.model_params.dim,
                             nhead=self.model_params.n_heads,
                             dim_feedforward=dim_ff, batch_first=batch_first)
+            elif model_params.layer_architecture == "misha-moe-transformer":
+                dim_ff = dim_ff = self.model_params.dim * \
+                         self.model_params.dim_ff_factor
+                return MoeTransformerBlock(model_params=self.model_params,
+                                           train_params=train_params,
+                                           batch_first=batch_first,
+                                           num_experts=self.model_params.moe_num_experts,
+                                           num_experts_per_tok=self.model_params.moe_num_experts_per_tok)
             else:
                 raise Exception("unknown layer_architecture:" +
                                 f"{model_params.layer_architecture}")
@@ -54,6 +63,9 @@ class Transformer(nn.Module):
                     attns.append(attn)
                 else:
                     x = layer(x, src_mask=mask)
+            elif self.model_params.layer_architecture == "misha-moe-transformer": 
+                x, attn = layer(x, src_mask=mask, attn_requests=attn_requests)
+                attns.append(attn)
             else:
                 raise Exception("unknown layer_architecture: " +
                                 f"{self.model_params.layer_architecture}")

@@ -15,6 +15,8 @@ class ModelParams:
     from_saved: str = ""
     individual_head_params: bool = False
     pos_encoding: str = "learned"
+    moe_num_experts: int = 8 # for misha-moe-transformer
+    moe_num_experts_per_tok: int = 2 # for misha-moe-transformer
 
 # the base code only provides vanilla transformer models, this is how these
 # parameters apply to them. You can reuse them also for other purposes - e.g.
