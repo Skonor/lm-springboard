@@ -15,8 +15,8 @@ class ModelParams:
     from_saved: str = ""
     individual_head_params: bool = False
     pos_encoding: str = "learned"
-    moe_num_experts: int = 8 # for misha-moe-transformer
-    moe_num_experts_per_tok: int = 2 # for misha-moe-transformer
+    moe_num_experts: int = 8 
+    moe_num_experts_per_tok: int = 2 
 
 # the base code only provides vanilla transformer models, this is how these
 # parameters apply to them. You can reuse them also for other purposes - e.g.
@@ -73,6 +73,9 @@ class ModelParams:
 #           torch.nn.TransformerEncoderLayer for each layer of the transformer.
 #           Optimisations gone in favour of keeping implementation in python -
 #           hence customisable. The relevant files are in model/transformer/.
+#       "moe-transformer":
+#           Uses local variation of custom transformer altered to be a Mixture of Experts model. 
+#           Look into model/transformer/moe_transformes.py for more details
 # from_os_pretrained:
 #   If not empty, load an open source pretrained model as the initial model
 #   state. Except for max_seq_len, all arguments describing the model
@@ -111,3 +114,7 @@ class ModelParams:
 #           As with "learned", but here the embedding is predetermined.
 #           Specifically, it is set to the sinusoidal positional encoding used
 #           in the original transformer paper, "Attention is all you need".
+# moe_num_experts:
+#   Used with layer_architecture = "moe_transformer". Total number if experts in each FFN layer. 
+# moe_num_experts_per_tok:
+#   Used with layer_architecture = "moe_transformer". How many experts to use for particular token. Which experts to use is decided by router. 

@@ -24,7 +24,7 @@ class Transformer(nn.Module):
                             d_model=self.model_params.dim,
                             nhead=self.model_params.n_heads,
                             dim_feedforward=dim_ff, batch_first=batch_first)
-            elif model_params.layer_architecture == "misha-moe-transformer":
+            elif model_params.layer_architecture == "moe-transformer":
                 dim_ff = dim_ff = self.model_params.dim * \
                          self.model_params.dim_ff_factor
                 return MoeTransformerBlock(model_params=self.model_params,
@@ -63,7 +63,7 @@ class Transformer(nn.Module):
                     attns.append(attn)
                 else:
                     x = layer(x, src_mask=mask)
-            elif self.model_params.layer_architecture == "misha-moe-transformer": 
+            elif self.model_params.layer_architecture == "moe-transformer": 
                 x, attn = layer(x, src_mask=mask, attn_requests=attn_requests)
                 attns.append(attn)
             else:
